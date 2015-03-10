@@ -23,6 +23,13 @@
             android:label="@string/app_name" 
             android:screenOrientation="landscape">
             
+        </activity>
+        
+        <activity
+            android:name="ma.exampl.imagineapp.activity.TableActivity"
+            android:label="@string/app_name" 
+            android:screenOrientation="landscape">
+            
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
