@@ -134,12 +134,12 @@ public class TableActivity extends Activity implements View.OnLongClickListener 
 				    int height=200;
 				    
 				    
-				    //Bitmap resizedbitmap=Bitmap.createScaledBitmap(ressource.getBitmapImage(), width, height, true);
-				    
-				imageView.setImageBitmap(ressource.getBitmapImage());
+				    Bitmap resizedbitmap=Bitmap.createScaledBitmap(ressource.getBitmapImage(), width, height, true);
+				  Log.d(LOG_TAG, String.valueOf(i));
+				imageView.setImageBitmap(resizedbitmap);
 			    
                 imageView.setOnLongClickListener(this);
-                imageView.getLayoutParams().width=200;
+                //imageView.getLayoutParams().width=200;
                 //imageView.getLayoutParams().height=200;
                 //imageView.setLayoutParams(new LayoutParams(200,200));
                 
