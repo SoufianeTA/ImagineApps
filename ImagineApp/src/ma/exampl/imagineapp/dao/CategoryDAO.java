@@ -5,6 +5,12 @@ import java.util.List;
 
 
 
+
+
+
+
+import ma.exampl.imagineapp.model.Category;
+import ma.exampl.imagineapp.model.Ressource;
 import ma.exampl.imagineapp.persistence.DataBaseHelper;
 import android.content.ContentValues;
 import android.content.Context;
@@ -28,6 +34,75 @@ public class CategoryDAO {
 		database = dataBaseHelper.getDataBase();
 	}
 
+	// ==================================================================================
+	private Category cursorToCategory(Cursor cursor) {
+		Category category = new Category();
+		category.setId(cursor.getInt(0));
+		category.setIdLibrary((cursor.getInt(1)));
+		category.setCategoryName(cursor.getString(2));
+		category.setCategoryImage(cursor.getBlob(3));
+		category.setFkIdCategory(cursor.getInt(4));
+
+		return category;
+	}
+	// ==================================================================================
+	public List<Category> getCategoriesByCategoryId(int id) {
+		Cursor cursor;
+		List<Category> categories = new ArrayList<Category>();
+		try {
+			cursor = database.query(DataBaseHelper.TABLE_CATEGORIES,
+					allColumns, "fk_id_category=?",
+					new String[] { String.valueOf(id) }, null, null, null);
+
+			cursor.moveToFirst();
+
+			while (!cursor.isAfterLast()) {
+				System.out.println("in the loop ");
+				Category category = cursorToCategory(cursor);
+				categories.add(category);
+				cursor.moveToNext();
+
+			}
+			cursor.close();
+
+			return categories;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		// make sure to close the cursor
+
+	}
+	// ==================================================================================
+	public Category getDefaultCategoryByIdLibrary(int id) {
+		Cursor cursor;
+		List<Category> categories = new ArrayList<Category>();
+		try {
+			cursor = database.query(DataBaseHelper.TABLE_CATEGORIES,
+					allColumns, "library_id=? "+ " AND "+"category_name=? ",
+					new String[] { String.valueOf(id),"Default" }, null, null, null);
+
+			cursor.moveToFirst();
+
+			while (!cursor.isAfterLast()) {
+				System.out.println("in the loop ");
+				Category category = cursorToCategory(cursor);
+				categories.add(category);
+				cursor.moveToNext();
+
+			}
+			cursor.close();
+
+			return categories.get(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		// make sure to close the cursor
+
+	}
 	// ==================================================================================
 
 }

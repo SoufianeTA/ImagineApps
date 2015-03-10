@@ -20,8 +20,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	private static String DB_PATH = "/data/data/ma.exampl.imagineapp/databases/";
 
 	public static final String TABLE_LIBRARIES = "Library";
+	public static final String TABLE_CATEGORIES = "Category";
 	public static final String TABLE_RESSOURCES = "Ressource";
-	public static final String TABLE_PREFRENCES = "Preferences";
+
 
 	private Context context;
 	private SQLiteDatabase myDataBase;
