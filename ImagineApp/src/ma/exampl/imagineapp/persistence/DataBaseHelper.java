@@ -16,7 +16,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 	// ==================================================================================
 
-	private static String DB_NAME = "DatabaseImagine.db";
+	private static String DB_NAME = "TestDB.db";
 	private static String DB_PATH = "/data/data/ma.exampl.imagineapp/databases/";
 
 	public static final String TABLE_LIBRARIES = "Library";
