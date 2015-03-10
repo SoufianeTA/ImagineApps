@@ -3,6 +3,9 @@ package ma.exampl.imagineapp.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
+
 import ma.exampl.imagineapp.model.Ressource;
 import ma.exampl.imagineapp.persistence.DataBaseHelper;
 import android.content.ContentValues;
@@ -16,8 +19,8 @@ public class RessourceDAO {
 
 	private SQLiteDatabase database;
 	private DataBaseHelper dataBaseHelper;
-	private String[] allColumns = { "_id", "ressourceName", "ressourceImage",
-			"ressourceSound", "idLabrary", "ressourcePosition" };
+	private String[] allColumns = { "_id", "category_id", "ressource_name",
+			"ressource_image", "ressource_sound", "fixed_ressource" };
 
 	// ==================================================================================
 
@@ -32,23 +35,23 @@ public class RessourceDAO {
 	private Ressource cursorToRessource(Cursor cursor) {
 		Ressource ressource = new Ressource();
 		ressource.setId(cursor.getInt(0));
-		ressource.setRessouceName(cursor.getString(1));
-		ressource.setRessourceImage(cursor.getBlob(2));
-		ressource.setRessourceSound(cursor.getBlob(3));
-		ressource.setLibraryId(cursor.getInt(4));
-		ressource.setPosition(cursor.getInt(5));
+		ressource.setCategoryId(cursor.getInt(1));
+		ressource.setRessouceName(cursor.getString(2));
+		ressource.setRessourceImage(cursor.getBlob(3));
+		ressource.setRessourceSound(cursor.getBlob(4));
+		ressource.setFixedRessource(cursor.getInt(5));
 
 		return ressource;
 	}
 
 	// ==================================================================================
 
-	public List<Ressource> getRessourcesByIdLibrary(int id) {
+	public List<Ressource> getRessourcesByCategoryId(int id) {
 		Cursor cursor;
 		List<Ressource> ressources = new ArrayList<Ressource>();
 		try {
 			cursor = database.query(DataBaseHelper.TABLE_RESSOURCES,
-					allColumns, "idLabrary=?",
+					allColumns, "category_id=?",
 					new String[] { String.valueOf(id) }, null, null, null);
 
 			cursor.moveToFirst();
@@ -76,13 +79,13 @@ public class RessourceDAO {
 
 	public void addRessource(Ressource ressource) {
 		ContentValues row = new ContentValues();
+		row.put("category_id", ressource.getCategoryId());
 		row.put("ressourceName", ressource.getRessouceName());
 		row.put("ressourceImage", ressource.getRessourceImage());
 		row.put("ressourceSound", ressource.getRessourceSound());
-		row.put("idLabrary", ressource.getLibraryId());
+		row.put("fixed_ressource", ressource.getFixedRessource());
 		database.insert(DataBaseHelper.TABLE_RESSOURCES, null, row);
 	}
-
 	// ==================================================================================
 
 }
