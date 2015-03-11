@@ -38,11 +38,15 @@ public class TableActivity extends Activity implements View.OnLongClickListener 
 	private Button buttonCategorie;
 	private TableLayout tableLayoutRessources;
 	private LayoutParams paramButtonCategories;
-	private TableRow.LayoutParams paramImageRessource;
-	private int selectedLibraryId;
+
 	private List<Category> categories;
 	private Category category;
 	private List<Ressource> listeRessources;
+	private int[] categoryHistory=new int[50];
+
+	private int selectedLibraryId;
+	private int imageRessourceSize;
+	private int nbrElementsByLine;
 
 	private CategoryDAO categotyDao;
 	private RessourceDAO ressourceDao;
@@ -61,10 +65,14 @@ public class TableActivity extends Activity implements View.OnLongClickListener 
 
 		/* Layout params */
 		paramButtonCategories = new LayoutParams(LayoutParams.MATCH_PARENT, 140);
-		paramImageRessource = new TableRow.LayoutParams(200,200);
-		
-		/* get selected library id FROM shared preferences */
+
+		/* get selected library id FROM shared preferences + other sharedPref */
 		selectedLibraryId = 1;
+		imageRessourceSize = 200;
+
+		/* nember of Elements in one Tablerow */
+		nbrElementsByLine = this.getResources().getDisplayMetrics().widthPixels
+				/ imageRessourceSize;
 
 		/* instantiate DAO */
 		categotyDao = new CategoryDAO(this);
@@ -111,38 +119,35 @@ public class TableActivity extends Activity implements View.OnLongClickListener 
 
 		/* fill TableLayout with ressources */
 
-		int i = 0;
+		int i = 0; // iterator
 		while (i < listeRessources.size()) {
-			int j = 0;
-			TableRow tr_head = new TableRow(this);
-			tr_head.setId(10);
-			tr_head.setBackgroundColor(Color.GRAY); // part1
-			tr_head.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-					LayoutParams.WRAP_CONTENT));
-			while (j < 5 && i < listeRessources.size()) {
-				
-				ImageView imageView = new ImageView(this);
+
+			/* instantiate new TableRow */
+			TableRow oneTableRow = new TableRow(this);
+			oneTableRow.setLayoutParams(new LayoutParams(
+					LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+
+			int j = 0; // iterator
+			while (j < nbrElementsByLine && i < listeRessources.size()) {
+
 				Ressource ressource = listeRessources.get(i);
+
+				/* instansiate imageView that represent a ressource */
+				ImageView imageView = new ImageView(this);
 				imageView.setTag(i);
-				// TableLayout tableLayout = new TableLayout(new
-				// LayoutParams(LayoutParams.WRAP_CONTENT, 50));
-				
-				// Bitmap bmp=BitmapFactory.decodeResource(getResources(),ressource.getBitmapImage());
-				
-				
-				    int width=200;
-				    int height=200;
-				    
-				    
-				    Bitmap resizedbitmap=Bitmap.createScaledBitmap(ressource.getBitmapImage(), width, height, true);
-				  Log.d(LOG_TAG, String.valueOf(i));
-				imageView.setImageBitmap(resizedbitmap);
-			    
-                imageView.setOnLongClickListener(this);
-                //imageView.getLayoutParams().width=200;
-                //imageView.getLayoutParams().height=200;
-                //imageView.setLayoutParams(new LayoutParams(200,200));
-                
+//				Bitmap resizedbitmap = Bitmap.createScaledBitmap(
+//						ressource.getBitmapImage(), imageRessourceSize,
+//						imageRessourceSize, true);
+//				imageView.setImageBitmap(resizedbitmap);
+				imageView.setImageBitmap(ressource.getBitmapImage());
+				imageView.setOnLongClickListener(this);
+
+				// -------------- Test ----------------
+//				 Log.d(LOG_TAG, String.valueOf(i));
+				 Log.d(LOG_TAG, String.valueOf(ressource.getId()));
+				// ------------ Test END --------------
+
+				/* Load the sound of the ressource */
 				final MediaPlayer mediaPlayer = new MediaPlayer();
 				try {
 					FileInputStream fileInputStream = ressource
@@ -152,6 +157,8 @@ public class TableActivity extends Activity implements View.OnLongClickListener 
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+
+				/* Play sound Onclick Imageview */
 				imageView.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -169,17 +176,23 @@ public class TableActivity extends Activity implements View.OnLongClickListener 
 
 					}
 				});
-				tr_head.addView(imageView);
-				
+
+				/* add imageView to the TableRow */
+				oneTableRow.addView(imageView);
+
+				/* increment */
 				j++;
 				i++;
 			}
-			tableLayoutRessources.addView(tr_head,new TableLayout.LayoutParams(
-				LayoutParams.MATCH_PARENT, // part4
-				LayoutParams.WRAP_CONTENT));
-			//i++;
-			
+			// -------- End Of the Loop j -----------
+
+			/* add the TableRow To The TableLayout */
+			tableLayoutRessources.addView(oneTableRow,
+					new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+							LayoutParams.WRAP_CONTENT));
+
 		}
+		// -------- End Of the Loop i -----------
 
 		// ---------- END onCreate ------------
 	}
@@ -191,7 +204,7 @@ public class TableActivity extends Activity implements View.OnLongClickListener 
 		return new View.OnClickListener() {
 			public void onClick(View v) {
 				// -------------- Test ----------------
-				Log.d(LOG_TAG, String.valueOf(idCategory));
+				// Log.d(LOG_TAG, String.valueOf(idCategory));
 				// ------------ Test END --------------
 			}
 		};
@@ -204,31 +217,8 @@ public class TableActivity extends Activity implements View.OnLongClickListener 
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 	// ==================================================================================
-	public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
-		 
-		int width = bm.getWidth();
-		 
-		int height = bm.getHeight();
-		 
-		float scaleWidth = ((float) newWidth) / width;
-		 
-		float scaleHeight = ((float) newHeight) / height;
-		 
-		// create a matrix for the manipulation
-		 
-		Matrix matrix = new Matrix();
-		 
-		// resize the bit map
-		 
-		matrix.postScale(scaleWidth, scaleHeight);
-		 
-		// recreate the new Bitmap
-		 
-		Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
-		 
-		return resizedBitmap;
-		 
-		}
+	
 
 }
