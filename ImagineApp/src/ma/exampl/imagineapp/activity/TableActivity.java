@@ -29,7 +29,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.LinearLayout.LayoutParams;
 
-public class TableActivity extends Activity implements View.OnLongClickListener {
+public class TableActivity extends Activity implements
+		View.OnLongClickListener, OnClickListener {
 	// ==================================================================================
 	private static String LOG_TAG = "SFIAN";
 
@@ -42,7 +43,8 @@ public class TableActivity extends Activity implements View.OnLongClickListener 
 	private List<Category> categories;
 	private Category category;
 	private List<Ressource> listeRessources;
-	private int[] categoryHistory=new int[50];
+	private int[] categoryHistory = new int[50];
+	private int categoryHistoryIndex = -1;
 
 	private int selectedLibraryId;
 	private int imageRessourceSize;
@@ -61,6 +63,7 @@ public class TableActivity extends Activity implements View.OnLongClickListener 
 		/* Layout ressources */
 		linearLayoutCategory = (LinearLayout) findViewById(R.id.TableActivity_LinearLayoutCategory);
 		buttonCategoryBack = (Button) findViewById(R.id.TableActivity_buttonCategoryBack);
+		buttonCategoryBack.setOnClickListener(this);
 		tableLayoutRessources = (TableLayout) findViewById(R.id.TableActivity_TableLayoutRessources);
 
 		/* Layout params */
@@ -85,7 +88,44 @@ public class TableActivity extends Activity implements View.OnLongClickListener 
 		// Log.d(LOG_TAG, category.getId()+" - "+category.getCategoryName());
 		// ------------ Test END --------------
 
-		/* get categories from default category */
+		categoryHistoryIndex++;
+		categoryHistory[categoryHistoryIndex] = category.getId();
+		selectCategory(categoryHistory[categoryHistoryIndex]);
+
+		// ---------- END onCreate ------------
+	}
+
+	// ==================================================================================
+
+	private View.OnClickListener getOnClickChooseCategory(
+			Button buttonCategorie2, final int idCategory) {
+		return new View.OnClickListener() {
+			public void onClick(View v) {
+				// -------------- Test ----------------
+				// Log.d(LOG_TAG, String.valueOf(idCategory));
+				// ------------ Test END --------------
+				categoryHistoryIndex++;
+				categoryHistory[categoryHistoryIndex] = idCategory;
+				selectCategory(idCategory);
+			}
+		};
+	}
+
+	// ==================================================================================
+	private void selectCategory(int categoryID) {
+
+		// -------------- Test ----------------
+		// Log.d(LOG_TAG, String.valueOf(categoryHistory.length));
+		// Log.d(LOG_TAG,
+		// String.valueOf(ressource.getId())+" - "+ressource.getRessouceName());
+		// ------------ Test END --------------
+
+		category = categotyDao.getCategoryById(categoryID);
+
+		linearLayoutCategory.removeAllViews();
+		tableLayoutRessources.removeAllViews();
+
+		/* get categories */
 		categories = categotyDao.getCategoriesByCategoryId(category.getId());
 
 		// -------------- Test ----------------
@@ -135,16 +175,16 @@ public class TableActivity extends Activity implements View.OnLongClickListener 
 				/* instansiate imageView that represent a ressource */
 				ImageView imageView = new ImageView(this);
 				imageView.setTag(i);
-//				Bitmap resizedbitmap = Bitmap.createScaledBitmap(
-//						ressource.getBitmapImage(), imageRessourceSize,
-//						imageRessourceSize, true);
-//				imageView.setImageBitmap(resizedbitmap);
-				imageView.setImageBitmap(ressource.getBitmapImage());
+				Bitmap resizedbitmap = Bitmap.createScaledBitmap(
+						ressource.getBitmapImage(), imageRessourceSize,
+						imageRessourceSize, true);
+				imageView.setImageBitmap(resizedbitmap);
 				imageView.setOnLongClickListener(this);
 
 				// -------------- Test ----------------
-//				 Log.d(LOG_TAG, String.valueOf(i));
-				 Log.d(LOG_TAG, String.valueOf(ressource.getId()));
+				// Log.d(LOG_TAG, String.valueOf(i));
+				// Log.d(LOG_TAG,
+				// String.valueOf(ressource.getId())+" - "+ressource.getRessouceName());
 				// ------------ Test END --------------
 
 				/* Load the sound of the ressource */
@@ -194,20 +234,6 @@ public class TableActivity extends Activity implements View.OnLongClickListener 
 		}
 		// -------- End Of the Loop i -----------
 
-		// ---------- END onCreate ------------
-	}
-
-	// ==================================================================================
-
-	private View.OnClickListener getOnClickChooseCategory(
-			Button buttonCategorie2, final int idCategory) {
-		return new View.OnClickListener() {
-			public void onClick(View v) {
-				// -------------- Test ----------------
-				// Log.d(LOG_TAG, String.valueOf(idCategory));
-				// ------------ Test END --------------
-			}
-		};
 	}
 
 	// ==================================================================================
@@ -219,6 +245,23 @@ public class TableActivity extends Activity implements View.OnLongClickListener 
 	}
 
 	// ==================================================================================
-	
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.TableActivity_buttonCategoryBack:
+			
+			if (categoryHistoryIndex-1 <= -1)
+				break;
+			categoryHistoryIndex--;
+			selectCategory(categoryHistory[categoryHistoryIndex]);
+			
+//			Log.d(LOG_TAG, String.valueOf(categoryHistoryIndex)+" - " +String.valueOf(categoryHistory[categoryHistoryIndex]));
+			break;
+
+		}
+
+	}
+
+	// ==================================================================================
 
 }

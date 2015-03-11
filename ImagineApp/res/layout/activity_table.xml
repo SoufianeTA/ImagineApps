@@ -31,7 +31,7 @@
         android:id="@+id/TableActivity_ScrollViewResources"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/TableActivity_ScrollViewCategory" >
+        android:layout_below="@id/TableActivity_buttonCategoryBack" >
 
         <TableLayout
             android:id="@+id/TableActivity_TableLayoutRessources"
