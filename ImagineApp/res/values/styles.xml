@@ -6,6 +6,10 @@
     <color name="white">#fff</color>
     <color name="black">#000</color>
 
+    <color name="DarkGray">#3D3D3D</color>
+    <color name="WhiteGray">#F5F5F5</color>
+    <color name="Orange">#FF8000</color>
+    
     <dimen name="photo_size">120dp</dimen>
     <dimen name="photo_spacing">4dp</dimen>
 

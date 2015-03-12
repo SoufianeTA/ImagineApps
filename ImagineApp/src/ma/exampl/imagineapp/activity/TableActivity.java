@@ -11,6 +11,7 @@ import ma.exampl.imagineapp.dao.CategoryDAO;
 import ma.exampl.imagineapp.dao.RessourceDAO;
 import ma.exampl.imagineapp.model.Category;
 import ma.exampl.imagineapp.model.Ressource;
+import ma.exampl.imagineapp.persistence.SharedPreferencesManager;
 import android.app.Activity;
 import android.content.ClipData;
 import android.graphics.Bitmap;
@@ -85,8 +86,9 @@ public class TableActivity extends Activity implements
 		paramButtonCategories = new LayoutParams(LayoutParams.MATCH_PARENT, 140);
 
 		/* get selected library id FROM shared preferences + other sharedPref */
-		selectedLibraryId = 1;
-		imageRessourceSize = 200;
+
+		selectedLibraryId = SharedPreferencesManager.getSelectedLibraryValue(this);
+		imageRessourceSize = SharedPreferencesManager.getImageSizeValue(this);
 
 		/* nember of Elements in one Tablerow */
 		nbrElementsByLine = this.getResources().getDisplayMetrics().widthPixels
