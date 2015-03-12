@@ -11,18 +11,20 @@ import ma.exampl.imagineapp.dao.CategoryDAO;
 import ma.exampl.imagineapp.dao.RessourceDAO;
 import ma.exampl.imagineapp.model.Category;
 import ma.exampl.imagineapp.model.Ressource;
-import android.R.integer;
 import android.app.Activity;
+import android.content.ClipData;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Matrix;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnDragListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -30,19 +32,23 @@ import android.widget.TableRow;
 import android.widget.LinearLayout.LayoutParams;
 
 public class TableActivity extends Activity implements
-		View.OnLongClickListener, OnClickListener {
+		View.OnLongClickListener, OnClickListener, OnDragListener {
 	// ==================================================================================
 	private static String LOG_TAG = "SFIAN";
 
 	private LinearLayout linearLayoutCategory;
 	private Button buttonCategoryBack;
 	private Button buttonCategorie;
+	private ImageButton buttonRemoveLastElement;
+	private ImageButton buttonReadSentence;
 	private TableLayout tableLayoutRessources;
 	private LayoutParams paramButtonCategories;
+	private TableRow tableRowSentence;
 
 	private List<Category> categories;
 	private Category category;
 	private List<Ressource> listeRessources;
+	private ArrayList<Ressource> sentenceList = new ArrayList<Ressource>();
 	private int[] categoryHistory = new int[50];
 	private int categoryHistoryIndex = -1;
 
@@ -62,9 +68,18 @@ public class TableActivity extends Activity implements
 
 		/* Layout ressources */
 		linearLayoutCategory = (LinearLayout) findViewById(R.id.TableActivity_LinearLayoutCategory);
+		tableLayoutRessources = (TableLayout) findViewById(R.id.TableActivity_TableLayoutRessources);
+		tableRowSentence = (TableRow) findViewById(R.id.TableActivity_TableRowSentence);
 		buttonCategoryBack = (Button) findViewById(R.id.TableActivity_buttonCategoryBack);
 		buttonCategoryBack.setOnClickListener(this);
-		tableLayoutRessources = (TableLayout) findViewById(R.id.TableActivity_TableLayoutRessources);
+		buttonRemoveLastElement = (ImageButton) findViewById(R.id.TableActivity_ButtonRemoveLastElement);
+		buttonRemoveLastElement.setOnClickListener(this);
+		buttonReadSentence = (ImageButton) findViewById(R.id.TableActivity_ButtonRead);
+		buttonReadSentence.setOnClickListener(this);
+
+		/* set on drag listener for the table layout sentence */
+		findViewById(R.id.TableActivity_TableLayoutSentence).setOnDragListener(
+				this);
 
 		/* Layout params */
 		paramButtonCategories = new LayoutParams(LayoutParams.MATCH_PARENT, 140);
@@ -112,7 +127,7 @@ public class TableActivity extends Activity implements
 	}
 
 	// ==================================================================================
-	private void selectCategory(int categoryID) {
+	public void selectCategory(int categoryID) {
 
 		// -------------- Test ----------------
 		// Log.d(LOG_TAG, String.valueOf(categoryHistory.length));
@@ -179,7 +194,7 @@ public class TableActivity extends Activity implements
 						ressource.getBitmapImage(), imageRessourceSize,
 						imageRessourceSize, true);
 				imageView.setImageBitmap(resizedbitmap);
-				imageView.setOnLongClickListener(this);
+				imageView.setOnLongClickListener(TableActivity.this);
 
 				// -------------- Test ----------------
 				// Log.d(LOG_TAG, String.valueOf(i));
@@ -237,11 +252,100 @@ public class TableActivity extends Activity implements
 	}
 
 	// ==================================================================================
+	private void readSentence() {
+		
+		mNext = 0;
+	    startNextFile();
+	    
+		/*
+			for (Iterator iterator = sentenceList.iterator(); iterator.hasNext();) {
+				Ressource ressource = (Ressource) iterator.next();
+				
+				final MediaPlayer mediaPlayer = new MediaPlayer();
+				try {
+					FileInputStream fileInputStream = ressource
+							.getSoundStream(this);
+					mediaPlayer.setDataSource(fileInputStream.getFD());
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				try {
+					mediaPlayer.prepare();
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+					
+					Thread thread = new Thread(new Runnable() {
+						public void run() {
+							mediaPlayer.start();
+						}
+					});
+					try {
+						thread.run();
+						thread.sleep(800);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+			}
+		 
+			*/
+		
+
+	}
+
+	// ==================================================================================
+
+	private int mNext=0;
+	private OnCompletionListener mListener = new OnCompletionListener() {
+	    @Override
+	    public void onCompletion(MediaPlayer mp) {
+	        mp.release();
+	        startNextFile();
+	    }
+	};
+
+	void startNextFile() {
+	    if (mNext < sentenceList.size()) {
+	    	final MediaPlayer mediaPlayer = new MediaPlayer();
+	    	try {
+	    	FileInputStream fileInputStream = sentenceList.get(mNext++)
+					.getSoundStream(this);
+			mediaPlayer.setDataSource(fileInputStream.getFD());
+			mediaPlayer.prepare();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	    	mediaPlayer.setOnCompletionListener(mListener);
+	    	mediaPlayer.start();
+	    }
+	}
+	// ==================================================================================
 
 	@Override
-	public boolean onLongClick(View v) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean onLongClick(View imageView) {
+		ClipData clipData = ClipData.newPlainText("", "");
+
+		View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(
+				imageView);
+		/*
+		 * start the drag - contains the data to be dragged, metadata for this
+		 * data and callback for drawing shadow
+		 */
+		imageView.startDrag(clipData, shadowBuilder, imageView, 0);
+		imageView.setVisibility(View.VISIBLE);
+		return true;
 	}
 
 	// ==================================================================================
@@ -249,17 +353,100 @@ public class TableActivity extends Activity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.TableActivity_buttonCategoryBack:
-			
-			if (categoryHistoryIndex-1 <= -1)
+
+			if (categoryHistoryIndex - 1 <= -1)
 				break;
 			categoryHistoryIndex--;
 			selectCategory(categoryHistory[categoryHistoryIndex]);
-			
-//			Log.d(LOG_TAG, String.valueOf(categoryHistoryIndex)+" - " +String.valueOf(categoryHistory[categoryHistoryIndex]));
+
+			// Log.d(LOG_TAG, String.valueOf(categoryHistoryIndex)+" - "
+			// +String.valueOf(categoryHistory[categoryHistoryIndex]));
+			break;
+
+		case R.id.TableActivity_ButtonRemoveLastElement:
+
+			if (tableRowSentence.getChildCount() <= 0)
+				break;
+			tableRowSentence.removeViewAt(tableRowSentence.getChildCount() - 1);
+			sentenceList.remove(sentenceList.size() - 1);
+			break;
+
+		case R.id.TableActivity_ButtonRead:
+
+			readSentence();
 			break;
 
 		}
 
+	}
+
+	// ==================================================================================
+
+	@Override
+	public boolean onDrag(View receivingLayoutView, DragEvent dragEvent) {
+		View draggedImageView = (View) dragEvent.getLocalState();
+
+		// Handles each of the expected events
+		switch (dragEvent.getAction()) {
+
+		case DragEvent.ACTION_DRAG_STARTED:
+			Log.i(LOG_TAG, "drag action started");
+			// Returns false. During the current drag and drop operation, this
+			// View will
+			// not receive events again until ACTION_DRAG_ENDED is sent.
+			return true;
+
+		case DragEvent.ACTION_DRAG_ENTERED:
+			Log.i(LOG_TAG, "drag action entered");
+			// the drag point has entered the bounding box
+			return true;
+
+		case DragEvent.ACTION_DRAG_LOCATION:
+			Log.i(LOG_TAG, "drag action location");
+			/*
+			 * triggered after ACTION_DRAG_ENTERED stops after
+			 * ACTION_DRAG_EXITED
+			 */
+			return true;
+
+		case DragEvent.ACTION_DRAG_EXITED:
+			Log.i(LOG_TAG, "drag action exited");
+			// the drag shadow has left the bounding box
+			return true;
+
+		case DragEvent.ACTION_DROP:
+			/*
+			 * the listener receives this action type when drag shadow released
+			 * over the target view the action only sent here if
+			 * ACTION_DRAG_STARTED returned true return true if successfully
+			 * handled the drop else false
+			 */
+
+			ViewGroup draggedImageViewParentLayout = (ViewGroup) draggedImageView
+					.getParent();
+			// draggedImageViewParentLayout.removeView(draggedImageView);
+			ImageView imageView = new ImageView(this);
+			ImageView old = (ImageView) draggedImageView;
+			imageView.setImageDrawable(old.getDrawable());
+			imageView.setTag(old.getTag());
+			//
+			TableLayout bottomFrameLayout = (TableLayout) receivingLayoutView;
+
+			tableRowSentence.addView(imageView);
+			sentenceList.add(listeRessources.get((Integer) old.getTag()));
+			// lastAddedImage++;
+
+			return false;
+
+		case DragEvent.ACTION_DRAG_ENDED:
+			return true;
+
+			// An unknown action type was received.
+		default:
+			Log.i(LOG_TAG, "Unknown action type received by OnDragListener.");
+			break;
+		}
+		return false;
 	}
 
 	// ==================================================================================

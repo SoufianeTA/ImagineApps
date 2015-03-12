@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/background" >
 
     <Button
         android:id="@+id/TableActivity_buttonCategoryBack"
@@ -40,5 +41,40 @@
         </TableLayout>
         
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/TableActivity_LayoutSentence"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/grid_state_focused" >
+
+        <TableLayout
+            android:id="@+id/TableActivity_TableLayoutSentence"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TableRow
+                android:id="@+id/TableActivity_TableRowSentence"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+            </TableRow>
+        </TableLayout>
+
+        <ImageButton
+            android:id="@+id/TableActivity_ButtonRead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_lock_silent_mode_off" />
+
+        <ImageButton
+            android:id="@+id/TableActivity_ButtonRemoveLastElement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_delete" />
+
+    </LinearLayout>
 
 </RelativeLayout>

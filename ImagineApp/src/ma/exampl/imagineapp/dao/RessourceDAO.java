@@ -52,7 +52,7 @@ public class RessourceDAO {
 		try {
 			cursor = database.query(DataBaseHelper.TABLE_RESSOURCES,
 					allColumns, "category_id=?",
-					new String[] { String.valueOf(id) }, null, null, null);
+					new String[] { String.valueOf(id) }, null, null, allColumns[5]+" DESC");
 
 			cursor.moveToFirst();
 
