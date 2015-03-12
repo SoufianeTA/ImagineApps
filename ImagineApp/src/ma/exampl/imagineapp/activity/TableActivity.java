@@ -39,8 +39,8 @@ public class TableActivity extends Activity implements
 	private LinearLayout linearLayoutCategory;
 	private Button buttonCategoryBack;
 	private Button buttonCategorie;
-	private ImageButton buttonRemoveLastElement;
-	private ImageButton buttonReadSentence;
+	private Button buttonRemoveLastElement;
+	private Button buttonReadSentence;
 	private TableLayout tableLayoutRessources;
 	private LayoutParams paramButtonCategories;
 	private TableRow tableRowSentence;
@@ -72,9 +72,9 @@ public class TableActivity extends Activity implements
 		tableRowSentence = (TableRow) findViewById(R.id.TableActivity_TableRowSentence);
 		buttonCategoryBack = (Button) findViewById(R.id.TableActivity_buttonCategoryBack);
 		buttonCategoryBack.setOnClickListener(this);
-		buttonRemoveLastElement = (ImageButton) findViewById(R.id.TableActivity_ButtonRemoveLastElement);
+		buttonRemoveLastElement = (Button) findViewById(R.id.TableActivity_ButtonRemoveLastElement);
 		buttonRemoveLastElement.setOnClickListener(this);
-		buttonReadSentence = (ImageButton) findViewById(R.id.TableActivity_ButtonRead);
+		buttonReadSentence = (Button) findViewById(R.id.TableActivity_ButtonRead);
 		buttonReadSentence.setOnClickListener(this);
 
 		/* set on drag listener for the table layout sentence */
@@ -157,6 +157,7 @@ public class TableActivity extends Activity implements
 
 			buttonCategorie = new Button(this);
 			buttonCategorie.setText(category.getCategoryName());
+			//buttonCategorie.setBackgroundResource(R.drawable.button_menu);
 			linearLayoutCategory
 					.addView(buttonCategorie, paramButtonCategories);
 

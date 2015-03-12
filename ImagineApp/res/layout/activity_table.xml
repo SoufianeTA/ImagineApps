@@ -2,16 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background" >
+    android:background="@drawable/background"
+    android:gravity="center_horizontal" >
 
     <Button
         android:id="@+id/TableActivity_buttonCategoryBack"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="Back" />
+        android:background="@drawable/category_back" />
 
     <HorizontalScrollView
         android:id="@+id/TableActivity_ScrollViewCategory"
@@ -36,8 +37,10 @@
 
         <TableLayout
             android:id="@+id/TableActivity_TableLayoutRessources"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" >
+
         </TableLayout>
         
     </ScrollView>
@@ -53,7 +56,7 @@
         <TableLayout
             android:id="@+id/TableActivity_TableLayoutSentence"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="70dp"
             android:layout_weight="1" >
 
             <TableRow
@@ -63,17 +66,17 @@
             </TableRow>
         </TableLayout>
 
-        <ImageButton
+        <Button
             android:id="@+id/TableActivity_ButtonRead"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_lock_silent_mode_off" />
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/speaker" />
 
-        <ImageButton
+        <Button
             android:id="@+id/TableActivity_ButtonRemoveLastElement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_delete" />
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/delete_element" />
 
     </LinearLayout>
 
