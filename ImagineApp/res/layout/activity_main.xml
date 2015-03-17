@@ -1,21 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/selectLibraryLayout"
-     >
+    android:background="@drawable/background"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/MainActivity_buttonStart"
+    <LinearLayout
+        android:id="@+id/MainActivity_LogoLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/MainActivity_buttonSelectLibrary"
-        android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/MainActivity_imageLogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/logo_autishome" />
+
+        <ImageView
+            android:id="@+id/MainActivity_imageName"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:src="@drawable/name" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select Library" />
-     
- </LinearLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" >
+
+        <FrameLayout
+            android:id="@+id/Main_frameButtonStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp" >
+
+            <ImageView
+                android:id="@+id/Main_ImageBg_Start"
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:src="@drawable/bg_button" />
+
+            <Button
+                android:id="@+id/Main_ButtonStart"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:background="@drawable/buttons_sync"
+                android:text="START"
+                android:textColor="@color/white" />
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/MainActivity_buttonSelectLibrary"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignBottom="@+id/Main_frameButtonStart"
+            android:layout_marginRight="40dp"
+            android:layout_toLeftOf="@+id/Main_frameButtonStart"
+            android:background="@drawable/buttons_sync"
+            android:text="Select library"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/MainActivity_buttonAbout"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignBottom="@+id/Main_frameButtonStart"
+            android:layout_marginLeft="40dp"
+            android:layout_toRightOf="@+id/Main_frameButtonStart"
+            android:background="@drawable/buttons_sync"
+            android:text="About"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+    
+</RelativeLayout>
