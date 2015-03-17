@@ -53,6 +53,18 @@
         android:layout_alignParentLeft="true"
         android:background="@color/grid_state_focused" >
 
+        <Button
+            android:id="@+id/TableActivity_ButtonRemoveLastElement"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/delete_element" />
+
+        <Button
+            android:id="@+id/TableActivity_ButtonRead"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/speaker" />
+
         <TableLayout
             android:id="@+id/TableActivity_TableLayoutSentence"
             android:layout_width="0dp"
@@ -66,18 +78,6 @@
 
             </TableRow>
         </TableLayout>
-
-        <Button
-            android:id="@+id/TableActivity_ButtonRead"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:background="@drawable/speaker" />
-
-        <Button
-            android:id="@+id/TableActivity_ButtonRemoveLastElement"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:background="@drawable/delete_element" />
 
     </LinearLayout>
 

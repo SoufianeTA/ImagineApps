@@ -20,6 +20,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.DragEvent;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -44,6 +45,7 @@ public class TableActivity extends Activity implements
 	private Button buttonReadSentence;
 	private TableLayout tableLayoutRessources;
 	private LayoutParams paramButtonCategories;
+	private LayoutParams paramtableRowSentence;
 	private TableRow tableRowSentence;
 
 	private List<Category> categories;
@@ -56,6 +58,7 @@ public class TableActivity extends Activity implements
 	private int selectedLibraryId;
 	private int imageRessourceSize;
 	private int nbrElementsByLine;
+	private int LangueDirection;
 
 	private CategoryDAO categotyDao;
 	private RessourceDAO ressourceDao;
@@ -65,12 +68,26 @@ public class TableActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_table);
+
+		/* get selected library id FROM shared preferences + other sharedPref */
+
+		selectedLibraryId = SharedPreferencesManager
+				.getSelectedLibraryValue(this);
+		imageRessourceSize = SharedPreferencesManager.getImageSizeValue(this);
+		LangueDirection = 1;
+
+		/* set layout */
+		if (LangueDirection == 1)
+			setContentView(R.layout.activity_table_left);
+		else
+			setContentView(R.layout.activity_table);
 
 		/* Layout ressources */
 		linearLayoutCategory = (LinearLayout) findViewById(R.id.TableActivity_LinearLayoutCategory);
 		tableLayoutRessources = (TableLayout) findViewById(R.id.TableActivity_TableLayoutRessources);
 		tableRowSentence = (TableRow) findViewById(R.id.TableActivity_TableRowSentence);
+		if (LangueDirection == 1)
+			tableRowSentence.setGravity(Gravity.RIGHT);
 		buttonCategoryBack = (Button) findViewById(R.id.TableActivity_buttonCategoryBack);
 		buttonCategoryBack.setOnClickListener(this);
 		buttonRemoveLastElement = (Button) findViewById(R.id.TableActivity_ButtonRemoveLastElement);
@@ -84,11 +101,6 @@ public class TableActivity extends Activity implements
 
 		/* Layout params */
 		paramButtonCategories = new LayoutParams(LayoutParams.MATCH_PARENT, 140);
-
-		/* get selected library id FROM shared preferences + other sharedPref */
-
-		selectedLibraryId = SharedPreferencesManager.getSelectedLibraryValue(this);
-		imageRessourceSize = SharedPreferencesManager.getImageSizeValue(this);
 
 		/* nember of Elements in one Tablerow */
 		nbrElementsByLine = this.getResources().getDisplayMetrics().widthPixels
@@ -159,7 +171,7 @@ public class TableActivity extends Activity implements
 
 			buttonCategorie = new Button(this);
 			buttonCategorie.setText(category.getCategoryName());
-			//buttonCategorie.setBackgroundResource(R.drawable.button_menu);
+			// buttonCategorie.setBackgroundResource(R.drawable.button_menu);
 			linearLayoutCategory
 					.addView(buttonCategorie, paramButtonCategories);
 
@@ -256,84 +268,67 @@ public class TableActivity extends Activity implements
 
 	// ==================================================================================
 	private void readSentence() {
-		
+
 		mNext = 0;
-	    startNextFile();
-	    
+		startNextFile();
+
 		/*
-			for (Iterator iterator = sentenceList.iterator(); iterator.hasNext();) {
-				Ressource ressource = (Ressource) iterator.next();
-				
-				final MediaPlayer mediaPlayer = new MediaPlayer();
-				try {
-					FileInputStream fileInputStream = ressource
-							.getSoundStream(this);
-					mediaPlayer.setDataSource(fileInputStream.getFD());
-					
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				try {
-					mediaPlayer.prepare();
-				} catch (IllegalStateException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			
-					
-					Thread thread = new Thread(new Runnable() {
-						public void run() {
-							mediaPlayer.start();
-						}
-					});
-					try {
-						thread.run();
-						thread.sleep(800);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-			}
-		 
-			*/
-		
+		 * for (Iterator iterator = sentenceList.iterator();
+		 * iterator.hasNext();) { Ressource ressource = (Ressource)
+		 * iterator.next();
+		 * 
+		 * final MediaPlayer mediaPlayer = new MediaPlayer(); try {
+		 * FileInputStream fileInputStream = ressource .getSoundStream(this);
+		 * mediaPlayer.setDataSource(fileInputStream.getFD());
+		 * 
+		 * } catch (IOException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); }
+		 * 
+		 * try { mediaPlayer.prepare(); } catch (IllegalStateException e) { //
+		 * TODO Auto-generated catch block e.printStackTrace(); } catch
+		 * (IOException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); }
+		 * 
+		 * 
+		 * Thread thread = new Thread(new Runnable() { public void run() {
+		 * mediaPlayer.start(); } }); try { thread.run(); thread.sleep(800); }
+		 * catch (InterruptedException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); }
+		 * 
+		 * }
+		 */
 
 	}
 
 	// ==================================================================================
 
-	private int mNext=0;
+	private int mNext = 0;
 	private OnCompletionListener mListener = new OnCompletionListener() {
-	    @Override
-	    public void onCompletion(MediaPlayer mp) {
-	        mp.release();
-	        startNextFile();
-	    }
+		@Override
+		public void onCompletion(MediaPlayer mp) {
+			mp.release();
+			startNextFile();
+		}
 	};
 
 	void startNextFile() {
-	    if (mNext < sentenceList.size()) {
-	    	final MediaPlayer mediaPlayer = new MediaPlayer();
-	    	try {
-	    	FileInputStream fileInputStream = sentenceList.get(mNext++)
-					.getSoundStream(this);
-			mediaPlayer.setDataSource(fileInputStream.getFD());
-			mediaPlayer.prepare();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (mNext < sentenceList.size()) {
+			final MediaPlayer mediaPlayer = new MediaPlayer();
+			try {
+				FileInputStream fileInputStream = sentenceList.get(mNext++)
+						.getSoundStream(this);
+				mediaPlayer.setDataSource(fileInputStream.getFD());
+				mediaPlayer.prepare();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			mediaPlayer.setOnCompletionListener(mListener);
+			mediaPlayer.start();
 		}
-	
-	    	mediaPlayer.setOnCompletionListener(mListener);
-	    	mediaPlayer.start();
-	    }
 	}
+
 	// ==================================================================================
 
 	@Override
@@ -370,7 +365,14 @@ public class TableActivity extends Activity implements
 
 			if (tableRowSentence.getChildCount() <= 0)
 				break;
-			tableRowSentence.removeViewAt(tableRowSentence.getChildCount() - 1);
+			
+			if (LangueDirection == 1)
+				tableRowSentence.removeViewAt(0);
+
+			else
+				tableRowSentence
+						.removeViewAt(tableRowSentence.getChildCount() - 1);
+
 			sentenceList.remove(sentenceList.size() - 1);
 			break;
 
@@ -435,7 +437,10 @@ public class TableActivity extends Activity implements
 			//
 			TableLayout bottomFrameLayout = (TableLayout) receivingLayoutView;
 
-			tableRowSentence.addView(imageView);
+			if (LangueDirection == 1)
+				tableRowSentence.addView(imageView, 0);
+			else
+				tableRowSentence.addView(imageView);
 			sentenceList.add(listeRessources.get((Integer) old.getTag()));
 			// lastAddedImage++;
 
