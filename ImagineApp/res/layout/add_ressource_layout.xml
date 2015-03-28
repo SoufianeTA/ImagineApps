@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="61dp"
+        android:text="Choisissez une image"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/uploadPic"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/takePic"
+        android:layout_marginLeft="30dp"
+        android:src="@drawable/up" />
+
+    <ImageView
+        android:id="@+id/takenPic"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/textView1"
+        android:layout_marginRight="69dp"
+        android:src="@drawable/logo_autishome" />
+
+    <Button
+        android:id="@+id/takePic"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignLeft="@+id/uploadPic"
+        android:layout_below="@+id/textView1"
+        android:background="@drawable/takepic" />
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:text="Choisissez un son"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <Button
+        android:id="@+id/recordButton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignLeft="@+id/playButton"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="29dp"
+        android:background="@drawable/record" />
+
+    <Button
+        android:id="@+id/playButton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignLeft="@+id/uploadPic"
+        android:layout_below="@+id/recordButton"
+        android:layout_marginTop="19dp"
+        android:background="@drawable/player"
+        android:visibility="invisible" />
+
+    
+
+     
+
+</RelativeLayout>

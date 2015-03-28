@@ -8,13 +8,17 @@ import java.util.List;
 
 import ma.exampl.imagineapp.R;
 import ma.exampl.imagineapp.dao.CategoryDAO;
+import ma.exampl.imagineapp.dao.LibraryDAO;
 import ma.exampl.imagineapp.dao.RessourceDAO;
 import ma.exampl.imagineapp.model.Category;
 import ma.exampl.imagineapp.model.Ressource;
 import ma.exampl.imagineapp.persistence.SharedPreferencesManager;
+import ma.exampl.imagineapp.util.BitmapUtil;
+import ma.exampl.imagineapp.util.ConverterUtil;
 import android.app.Activity;
 import android.content.ClipData;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
@@ -29,6 +33,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.LinearLayout.LayoutParams;
@@ -47,6 +52,9 @@ public class TableActivity extends Activity implements
 	private LayoutParams paramButtonCategories;
 	private LayoutParams paramtableRowSentence;
 	private TableRow tableRowSentence;
+	private RelativeLayout mainLayout;
+	private Bitmap bitmapBackground;
+	private BitmapDrawable bitmapDrawableBackground;
 
 	private List<Category> categories;
 	private Category category;
@@ -56,32 +64,50 @@ public class TableActivity extends Activity implements
 	private int categoryHistoryIndex = -1;
 
 	private int selectedLibraryId;
+	private int selectedColorId;
 	private int imageRessourceSize;
 	private int nbrElementsByLine;
 	private int LangueDirection;
 
 	private CategoryDAO categotyDao;
 	private RessourceDAO ressourceDao;
-
+	private LibraryDAO libraryDao;
+	
 	// ==================================================================================
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
+		/* instantiate DAO */
+		categotyDao = new CategoryDAO(this);
+		ressourceDao = new RessourceDAO(this);
+		libraryDao=new LibraryDAO(this);
+		
 		/* get selected library id FROM shared preferences + other sharedPref */
 
 		selectedLibraryId = SharedPreferencesManager
 				.getSelectedLibraryValue(this);
-		imageRessourceSize = SharedPreferencesManager.getImageSizeValue(this);
-		LangueDirection = 1;
+//		imageRessourceSize = SharedPreferencesManager.getImageSizeValue(this);
+		imageRessourceSize = (int) ConverterUtil.convertDpToPixel(77, this);
+		
+		selectedColorId = SharedPreferencesManager.getSelectedColorValue(this);
+		 Log.d(LOG_TAG,String.valueOf(libraryDao.getLibraryDirectionById(selectedLibraryId)));
+		LangueDirection = libraryDao.getLibraryDirectionById(selectedLibraryId);
 
 		/* set layout */
-		if (LangueDirection == 1)
+		if (LangueDirection == 1) {
 			setContentView(R.layout.activity_table_left);
-		else
+			mainLayout = (RelativeLayout) findViewById(R.id.TableActivity_MainLayoutLeft);
+			
+		} else {
 			setContentView(R.layout.activity_table);
+			mainLayout = (RelativeLayout) findViewById(R.id.TableActivity_MainLayout);
+		}
 
+		/* set bg Color */
+		setBackground();
+		
 		/* Layout ressources */
 		linearLayoutCategory = (LinearLayout) findViewById(R.id.TableActivity_LinearLayoutCategory);
 		tableLayoutRessources = (TableLayout) findViewById(R.id.TableActivity_TableLayoutRessources);
@@ -106,9 +132,6 @@ public class TableActivity extends Activity implements
 		nbrElementsByLine = this.getResources().getDisplayMetrics().widthPixels
 				/ imageRessourceSize;
 
-		/* instantiate DAO */
-		categotyDao = new CategoryDAO(this);
-		ressourceDao = new RessourceDAO(this);
 
 		/* get the default category using library id */
 		category = categotyDao.getDefaultCategoryByIdLibrary(selectedLibraryId);
@@ -365,7 +388,7 @@ public class TableActivity extends Activity implements
 
 			if (tableRowSentence.getChildCount() <= 0)
 				break;
-			
+
 			if (LangueDirection == 1)
 				tableRowSentence.removeViewAt(0);
 
@@ -457,6 +480,21 @@ public class TableActivity extends Activity implements
 		return false;
 	}
 
+	// ================================================================================
+		public void setBackground() {
+			bitmapBackground = BitmapUtil.decodeSampledBitmapFromResource(
+					getResources(), selectedColorId, 200, 200);
+			BitmapDrawable bm = new BitmapDrawable(
+					TableActivity.this.getResources(), bitmapBackground);
+			mainLayout.setBackgroundDrawable(bm);
+			// if(bitmapBackground!=null && !bitmapBackground.isRecycled()){
+			// bitmapBackground.recycle();
+			// bitmapBackground=null;
+			// bitmapDrawableBackground=null;
+			// }
+		}
+
+		// ================================================================================
 	// ==================================================================================
 
 }
