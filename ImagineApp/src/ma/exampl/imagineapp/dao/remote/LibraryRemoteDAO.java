@@ -94,8 +94,20 @@ private void setLibraries(List<Library> librariesToReturn , ListView l1) {
 //		}
 //	});
 	
+}
+
+public void saveLibraryToRemoteServer(Library libraryToSave ,Context context)
+{
+	Parse.initialize(context, ParseComConsts.USER, ParseComConsts.PASSWORD);
+	ParseObject parseObject = new ParseObject("Library");
+	parseObject.put("librairyName", libraryToSave.getLibraryName());
+	parseObject.put("librairieAuthorFullName", libraryToSave.getLibraryAuthorFullName());
+	parseObject.put("language", libraryToSave.getLanguage());
+	parseObject.saveInBackground();
 	
 }
+
+
 
 public static class DataListAdapter extends BaseAdapter 
 {

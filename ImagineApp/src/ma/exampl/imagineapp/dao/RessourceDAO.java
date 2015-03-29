@@ -80,9 +80,9 @@ public class RessourceDAO {
 	public void addRessource(Ressource ressource) {
 		ContentValues row = new ContentValues();
 		row.put("category_id", ressource.getCategoryId());
-		row.put("ressourceName", ressource.getRessouceName());
-		row.put("ressourceImage", ressource.getRessourceImage());
-		row.put("ressourceSound", ressource.getRessourceSound());
+		row.put("ressource_name", ressource.getRessouceName());
+		row.put("ressource_image", ressource.getRessourceImage());
+		row.put("ressource_sound", ressource.getRessourceSound());
 		row.put("fixed_ressource", ressource.getFixedRessource());
 		database.insert(DataBaseHelper.TABLE_RESSOURCES, null, row);
 	}

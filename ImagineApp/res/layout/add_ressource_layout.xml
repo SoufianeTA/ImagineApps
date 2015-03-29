@@ -79,4 +79,23 @@
         android:layout_toLeftOf="@+id/takenPic"
         android:text="Add Ressource" />
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/takenPic"
+        android:layout_marginLeft="64dp"
+        android:layout_toRightOf="@+id/textView1"
+        android:text="Ressource Name"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/ressourceName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/takenPic"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
 </RelativeLayout>

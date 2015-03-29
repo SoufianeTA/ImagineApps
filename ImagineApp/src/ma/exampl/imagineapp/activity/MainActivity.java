@@ -36,7 +36,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private Button bSelectLibrary;
 	private Button bSelectColor;
 	private Button bAbout;
-	private Button bAddLibrary;
+	private Button bManageLibraries;
 	private ImageView backgroundbuttonStart;
 	private Animation animat;
 	private LinearLayout layoutLogo;
@@ -99,9 +99,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		bSelectColor.setOnClickListener(this);
 		bSelectColor.setAnimation(animat);
 		
-		bAddLibrary = (Button) findViewById(R.id.MainActivity_addLibrary);
-		bAddLibrary.setOnClickListener(this);
-		bAddLibrary.setAnimation(animat);
+		bManageLibraries = (Button) findViewById(R.id.MainActivity_manageLibraries);
+		bManageLibraries.setOnClickListener(this);
+		bManageLibraries.setAnimation(animat);
 
 		animat = AnimationUtils.loadAnimation(this,
 				R.anim.animation_main_logo_show);
@@ -138,10 +138,10 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		switch (v.getId()) {
 
-		case R.id.MainActivity_addLibrary:
+		case R.id.MainActivity_manageLibraries:
 
 			startActivity(new Intent(MainActivity.this,
-					AddLibraryActivity.class));
+					CustomizeLibraryActivity.class));
 
 			break;
 

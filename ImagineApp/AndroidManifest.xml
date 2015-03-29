@@ -38,6 +38,11 @@
             android:label="@string/app_name"
             android:screenOrientation="landscape" >
         </activity>
+		  <activity
+            android:name="ma.exampl.imagineapp.activity.CustomizeLibraryActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape" >
+        </activity>      
         <activity
             android:name="ma.exampl.imagineapp.activity.DownloadActivity"
             android:label="@string/app_name"

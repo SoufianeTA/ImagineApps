@@ -49,13 +49,11 @@ public class CategoryDAO {
 		row.put("category_name", category.getCategoryName());
 		row.put("category_image", category.getCategoryImage());
 		row.put("library_id", library.getId());
-		row.put("language", library.getLanguage());
-		row.put("description", library.getDescription());
-		row.put("direction", library.getDirection());
+		
 		
 		Log.i("monLog", library.getLanguage());
 		
-		database.insert(DataBaseHelper.TABLE_LIBRARIES, null, row);
+		database.insert(DataBaseHelper.TABLE_CATEGORIES, null, row);
 
 	}
 	// ==================================================================================

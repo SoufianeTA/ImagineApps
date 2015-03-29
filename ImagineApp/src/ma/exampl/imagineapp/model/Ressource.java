@@ -70,6 +70,9 @@ public class Ressource {
 		fos.close();
 		return new FileInputStream(tempMp3);
 	}
+	
+	
+	
 
 	public int getCategoryId() {
 		return categoryId;
