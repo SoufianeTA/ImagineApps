@@ -26,17 +26,16 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnDragListener;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.LinearLayout.LayoutParams;
 
 public class TableActivity extends Activity implements
 		View.OnLongClickListener, OnClickListener, OnDragListener {
@@ -72,7 +71,7 @@ public class TableActivity extends Activity implements
 	private CategoryDAO categotyDao;
 	private RessourceDAO ressourceDao;
 	private LibraryDAO libraryDao;
-	
+
 	// ==================================================================================
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,24 +81,26 @@ public class TableActivity extends Activity implements
 		/* instantiate DAO */
 		categotyDao = new CategoryDAO(this);
 		ressourceDao = new RessourceDAO(this);
-		libraryDao=new LibraryDAO(this);
-		
+		libraryDao = new LibraryDAO(this);
+
 		/* get selected library id FROM shared preferences + other sharedPref */
 
 		selectedLibraryId = SharedPreferencesManager
 				.getSelectedLibraryValue(this);
-//		imageRessourceSize = SharedPreferencesManager.getImageSizeValue(this);
+		// imageRessourceSize =
+		// SharedPreferencesManager.getImageSizeValue(this);
 		imageRessourceSize = (int) ConverterUtil.convertDpToPixel(77, this);
-		
+
 		selectedColorId = SharedPreferencesManager.getSelectedColorValue(this);
-		 Log.d(LOG_TAG,String.valueOf(libraryDao.getLibraryDirectionById(selectedLibraryId)));
+		Log.d(LOG_TAG, String.valueOf(libraryDao
+				.getLibraryDirectionById(selectedLibraryId)));
 		LangueDirection = libraryDao.getLibraryDirectionById(selectedLibraryId);
 
 		/* set layout */
 		if (LangueDirection == 1) {
 			setContentView(R.layout.activity_table_left);
 			mainLayout = (RelativeLayout) findViewById(R.id.TableActivity_MainLayoutLeft);
-			
+
 		} else {
 			setContentView(R.layout.activity_table);
 			mainLayout = (RelativeLayout) findViewById(R.id.TableActivity_MainLayout);
@@ -107,7 +108,7 @@ public class TableActivity extends Activity implements
 
 		/* set bg Color */
 		setBackground();
-		
+
 		/* Layout ressources */
 		linearLayoutCategory = (LinearLayout) findViewById(R.id.TableActivity_LinearLayoutCategory);
 		tableLayoutRessources = (TableLayout) findViewById(R.id.TableActivity_TableLayoutRessources);
@@ -131,7 +132,6 @@ public class TableActivity extends Activity implements
 		/* nember of Elements in one Tablerow */
 		nbrElementsByLine = this.getResources().getDisplayMetrics().widthPixels
 				/ imageRessourceSize;
-
 
 		/* get the default category using library id */
 		category = categotyDao.getDefaultCategoryByIdLibrary(selectedLibraryId);
@@ -481,20 +481,20 @@ public class TableActivity extends Activity implements
 	}
 
 	// ================================================================================
-		public void setBackground() {
-			bitmapBackground = BitmapUtil.decodeSampledBitmapFromResource(
-					getResources(), selectedColorId, 200, 200);
-			BitmapDrawable bm = new BitmapDrawable(
-					TableActivity.this.getResources(), bitmapBackground);
-			mainLayout.setBackgroundDrawable(bm);
-			// if(bitmapBackground!=null && !bitmapBackground.isRecycled()){
-			// bitmapBackground.recycle();
-			// bitmapBackground=null;
-			// bitmapDrawableBackground=null;
-			// }
-		}
+	public void setBackground() {
+		bitmapBackground = BitmapUtil.decodeSampledBitmapFromResource(
+				getResources(), selectedColorId, 200, 200);
+		BitmapDrawable bm = new BitmapDrawable(
+				TableActivity.this.getResources(), bitmapBackground);
+		mainLayout.setBackgroundDrawable(bm);
+		// if(bitmapBackground!=null && !bitmapBackground.isRecycled()){
+		// bitmapBackground.recycle();
+		// bitmapBackground=null;
+		// bitmapDrawableBackground=null;
+		// }
+	}
 
-		// ================================================================================
+	// ================================================================================
 	// ==================================================================================
 
 }

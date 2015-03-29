@@ -5,7 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import ma.exampl.imagineapp.R;
+import ma.exampl.imagineapp.dao.CategoryDAO;
 import ma.exampl.imagineapp.dao.LibraryDAO;
+import ma.exampl.imagineapp.model.Category;
 import ma.exampl.imagineapp.model.Library;
 import ma.exampl.imagineapp.persistence.SharedPreferencesManager;
 import android.app.Activity;
@@ -44,15 +46,24 @@ public class AddLibraryActivity extends Activity {
 				LibraryDAO libraryDAO = new LibraryDAO(getApplicationContext());
 				Library library = new Library();
 				library.setDateOfCreation(dateFormat.format(date));
-				library.setLibraryName(userName.toString());
-				library.setLibraryAuthorFullName(userName.toString());
-				library.setDescription(description.toString());
-				library.setLanguage(langue.toString());
-				library.setId(libraryDAO.getAllLibraries().size()+1);
+				library.setLibraryName(userName.getText().toString());
+				library.setLibraryAuthorFullName(userName.getText().toString());
+				library.setDescription(description.getText().toString());
+				library.setLanguage(langue.getText().toString());
+				library.setId(libraryDAO.getLastInsertedIndex()+1);
 				
 				libraryDAO.addLibrary(library);
-				SharedPreferencesManager.Selected_library_toAdd_Value(getApplicationContext() , library.getId());
-				startActivity(new Intent(AddLibraryActivity.this,AddRessourceActivity.class));
+				CategoryDAO categoryDAO = new CategoryDAO(getApplicationContext());
+
+				Category category = new Category();
+				category.setCategoryName("Default");
+				category.setId(categoryDAO.getLastInsertedIndex()+1);
+				categoryDAO.addCategorie(category, library);
+				
+			//	SharedPreferencesManager.Selected_library_toAdd_Value(getApplicationContext() , library.getId());
+				Intent intent = new Intent(AddLibraryActivity.this , AddRessourceActivity.class);
+				intent.putExtra("categorieId", category.getId());
+				startActivity(intent);
 				
 			}
 		});

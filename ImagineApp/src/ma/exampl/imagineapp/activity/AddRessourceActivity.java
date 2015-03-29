@@ -1,15 +1,20 @@
 package ma.exampl.imagineapp.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
 import ma.exampl.imagineapp.R;
+import ma.exampl.imagineapp.dao.LibraryDAO;
+import ma.exampl.imagineapp.model.Library;
+import ma.exampl.imagineapp.model.Ressource;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.media.MediaPlayer;
@@ -33,7 +38,7 @@ public class AddRessourceActivity extends Activity {
 	private static final int SELECT_PHOTO = 100;
 	private static final String LOG_TAG = "AudioRecordTest";
 	private static String mFileName = null;
-
+	private Button mButtonAdd;
 	private Button mRecordButton;
 	private MediaRecorder mRecorder = null;
 	private Button mPlayButton;
@@ -46,7 +51,9 @@ public class AddRessourceActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_ressource_layout);
-
+		
+		final Intent intent = getIntent();
+		
 		takePic = (Button) findViewById(R.id.takePic);
 		takePic.setOnClickListener(new OnClickListener() {
 
@@ -113,7 +120,23 @@ public class AddRessourceActivity extends Activity {
 
 		});
 		
-		
+		mButtonAdd = (Button) findViewById(R.id.addRessourceButton);
+		mButtonAdd.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				Ressource ressource = new Ressource();
+				ressource.setCategoryId(Integer.parseInt(intent.getStringExtra("categorieId")));
+				
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				Bitmap bmp = ((BitmapDrawable) takenPic.getDrawable()).getBitmap();
+				bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+				ressource.setRessourceImage(stream.toByteArray());
+				
+				//ressource.setRessourceSound();
+			}
+		});
 
 	}
 

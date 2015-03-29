@@ -92,7 +92,7 @@
             android:layout_marginLeft="40dp"
             android:layout_toRightOf="@+id/Main_frameButtonStart"
             android:background="@drawable/buttons_sync"
-            android:text="About"
+            android:text="Download"
             android:textColor="@color/white"
             android:textSize="12sp" />
 

@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class LibraryDAO {
 	// ==================================================================================
@@ -29,6 +30,10 @@ public class LibraryDAO {
 
 	// ==================================================================================
 
+	
+	
+	
+	
 	public List<Library> getAllLibraries() {
 
 		List<Library> libraries = new ArrayList<Library>();
@@ -106,12 +111,15 @@ public class LibraryDAO {
 
 	public void addLibrary(Library library) {
 		ContentValues row = new ContentValues();
-		row.put("libraryName", library.getLibraryName());
-		row.put("libraryAuthorFullName", library.getLibraryAuthorFullName());
-		row.put("dateOfCreation", library.getDateOfCreation());
+		row.put("library_name", library.getLibraryName());
+		row.put("library_author_fullName", library.getLibraryAuthorFullName());
+		row.put("date_of_creation", library.getDateOfCreation());
 		row.put("language", library.getLanguage());
 		row.put("description", library.getDescription());
 		row.put("direction", library.getDirection());
+		
+		Log.i("monLog", library.getLanguage());
+		
 		database.insert(DataBaseHelper.TABLE_LIBRARIES, null, row);
 
 	}
@@ -125,6 +133,7 @@ public class LibraryDAO {
 
 		return cursor.getInt(0);
 	}
+	
 	// ==================================================================================
 
 }
